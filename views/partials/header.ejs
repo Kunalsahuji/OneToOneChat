@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocketIO</title>
+    <link rel="icon"
+        href="https://imgs.search.brave.com/sUj8tUrxSXybBcFaVx113NlJBE7iYWkrEG1xMYAuVR0/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9wbHVz/LnVuc3BsYXNoLmNv/bS9wcmVtaXVtX3Bo/b3RvLTE2ODM1ODQ0/MDU3NzItYWU1ODcx/MmI0MTcyP3E9ODAm/dz0xMDAwJmF1dG89/Zm9ybWF0JmZpdD1j/cm9wJml4bGliPXJi/LTQuMC4zJml4aWQ9/TTN3eE1qQTNmREI4/TUh4elpXRnlZMmg4/T1h4OGQyaGhkSE5o/Y0hBbE1qQnBZMjl1/ZkdWdWZEQjhmREI4/Zkh3dw.jpeg">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <nav class=" flex gap-x-10 font-semibold justify-center text-center text-xl">
+        <% if(user) { %>
+            <a class="hover:bg-gray-200 block rounded-xl p-3" href="/">Homepage</a>
+            <a class="hover:bg-gray-200 block rounded-xl p-3" href="/logout-user/<%=user._id%>">Logout</a>
+            <% } else{ %>
+                <a class="hover:bg-gray-200 block rounded-xl p-3" href="/">Homepage</a>
+                <a class="hover:bg-gray-200 block rounded-xl p-3" href="/login">Login</a>
+                <% } %>
+
+    </nav>
