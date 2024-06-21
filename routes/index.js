@@ -47,10 +47,15 @@ router.get('/logout-user/:id', isLoggedIn, function (req, res, next) {
   })
 });
 
+router.get('/getOnlineUser', isLoggedIn, async (req, res, next) => {
+  const loggedInUser = req.user
+  const onlineUsers = await User.find({
+    socketId: { $ne: "" },
+    _id: { $ne: loggedInUser._id }
+  })
+  res.status(200).json({ onlineUsers })
+})
 
-// router.get('/update-user/:id', isLoggedIn, function (req, res, next) {
-//   res.render('update-user', { user: req.user });
-// });
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next();

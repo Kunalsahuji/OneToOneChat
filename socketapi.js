@@ -12,7 +12,33 @@ io.on("connection", function (socket) {
         await userModel.findOneAndUpdate({ username }, { socketId: socket.id })
     })
 
+    // disconnect
+    socket.on('disconnect', async () => {
+        await userModel.findOneAndUpdate(
+            {
+                socketId: socket.id
+            },
+            { socketId: "" }
+        )
+    })
+
+    // sender receiver text
+    socket.on("sony", async (messageObject) => {
+        const sender = await userModel.findOne({
+            username: messageObject.sender
+        })
+        const receiver = await userModel.findOne({
+            username: messageObject.receiver
+        })
+        const messagePacket = {
+            sender: sender,
+            receiver: receiver,
+            text: messageObject.text
+        }
+        socket.to(receiver.socketId).emit("max", messagePacket)
+    })
 });
+
 // end of socket.io logic
 
 module.exports = socketapi;
