@@ -30,8 +30,9 @@ router.get('/register', function (req, res, next) {
 router.post('/register-user', async function (req, res, next) {
   try {
     const { name, username, email, password } = req.body;
+    const { profileImage } = req.body.profileImage
     await User.register(
-      { name, username, email }, password
+      { profileImage, name, username, email }, password
     )
     res.redirect('/login',);
   } catch (error) {

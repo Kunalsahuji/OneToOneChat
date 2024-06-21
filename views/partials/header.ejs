@@ -16,11 +16,12 @@
 <body>
     <nav class=" flex gap-x-10 font-semibold justify-center text-center text-xl">
         <% if(user) { %>
-            <a class="hover:bg-gray-200 block rounded-xl p-3" href="/">Homepage</a>
-            <a class="hover:bg-gray-200 block rounded-xl p-3" href="/logout-user/<%=user._id%>">Logout</a>
+            <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/">Homepage</a>
+            <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3"
+                href="/logout-user/<%=user._id%>">Logout</a>
             <% } else{ %>
-                <a class="hover:bg-gray-200 block rounded-xl p-3" href="/">Homepage</a>
-                <a class="hover:bg-gray-200 block rounded-xl p-3" href="/login">Login</a>
+                <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/">Homepage</a>
+                <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/login">Login</a>
                 <% } %>
 
     </nav>

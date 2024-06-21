@@ -1,27 +1,31 @@
 <%- include('partials/header') %>
-    <div class="rounded-xl pt-[3%] w-[80%] m-auto">
-        <h1 class="bg-gray-200 w-[50%] p-5 m-auto rounded-xl text-center text-5xl font-extrabold text-purple-400">
-            Register User</h1>
+    <div class="rounded-3xl pt-[2%] w-[55%] m-auto bg-purple-900">
+        <div class="">
+            <h1 class="bg-gray-200 w-[50%] p-5 m-auto rounded-xl text-center text-5xl font-extrabold text-purple-400">
+                Register User</h1>
+        </div>
 
         <form class="mt-[3%] text-center" action="/register-user" method="post"> <br>
-            <input class="w-[30%] mb-10 border border-zinc-500 p-3 rounded-md text-xl " type="text" name="name"
+            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl bg-gray-200 text-gray-400"
+                type="file" name="profileImage" placeholder="profileImage"> <br>
+            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl " type="text" name="name"
                 placeholder="full name"> <br>
-            <input class="w-[30%] mb-10 border border-zinc-500 p-3 rounded-md text-xl " type="username" name="username"
+            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl " type="username" name="username"
                 placeholder="username"> <br>
-            <input class="w-[30%] mb-10 border border-zinc-500 p-3 rounded-md text-xl " type="email" name="email"
+            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl " type="email" name="email"
                 placeholder="email"> <br>
-            <input class="w-[30%] mb-10 border border-zinc-500 p-3 rounded-md text-xl " type="password" name="password"
-                placeholder="password"> <br>
+            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl text-gray-700" type="password"
+                name="password" placeholder="password"> <br>
 
             <button
                 class="mt-3 rounded-xl text-center block w-[30%] m-auto hover:bg-[purple-600 text-white py-3 px-5 bg-purple-400">Register-user</button>
 
 
         </form>
-
-
-        <p class="mt-3 w-[40%] text-center m-auto">Already have an account?
-            <a class="text-purple-400 hover:text-purple-600" href="/login">Login</a>
-        </p>
+        <div class="py-2">
+            <p class="mt-3 w-[40%] text-center m-auto">Already have an account?
+                <a class="text-purple-400 hover:text-purple-600" href="/login">Login</a>
+            </p>
+        </div>
     </div>
     <%- include('partials/footer') %>

@@ -1,3 +1,116 @@
-<%- include('partials/header') %>
+<!-- <%- include('partials/header') %>
   <h1>This is Home Page</h1>
-  <%- include('partials/footer') %>
+  <%- include('partials/footer') %> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href='https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css' rel='stylesheet' />
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+  <main>
+
+    <div class="left">
+      <div class="top">
+        <div class="user">
+          <img src="<%= user.profileImage %>" alt="">
+          <h1>
+            <%= user.username %>
+          </h1>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="users">
+      
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="topUser">
+        <div class="user">
+          <img
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D"
+            alt="">
+          <div class="text">
+            <h1>Username</h1>
+            <small>Active now</small>
+          </div>
+        </div>
+      </div>
+      <div class="conversation">
+        <div class="messages">
+          <div class="message">
+            <img
+              src="https://images.unsplash.com/photo-1622396636133-ba43f812bc35?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D"
+              alt="">
+            <p>Some message</p>
+          </div>
+          <div class="message">
+            <p>Some message</p>
+          </div>
+        </div>
+
+        <div class="inputs">
+          <input type="text" placeholder="Write your message">
+          <button><i class="ri-send-plane-line"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    var user = "<%= user.username %>"
+    socket.emit('join', user)
+
+    // outGoingMessages
+    const button = document.querySelector('.inputs button')
+    const input = document.querySelector('.inputs input')
+    const messages = document.querySelector('.messages')
+
+    button.addEventListener('click', () => {
+      const message = input.value
+      const messageTemplate = `
+      <div class="message">
+            <p>${message}</p>
+          </div>
+      `
+      messages.innerHTML += messageTemplate
+      input.value = ""
+    })
+
+    // incomingMessages
+    function appendIncomingMessage(userImage, message) {
+      const messages = document.querySelector('.messages')
+      const messageTemplate = `
+      <div class="message">
+            <img src="${userImage}" alt="">
+            <p>${message}</p>
+      </div>`
+      messages.innerHTML += messageTemplate
+    }
+
+    // newChat 
+    function appendNewChat(userImage, username) {
+      const users = document.querySelector('.left .users')
+      const messageTemplate = `
+       <div class="user">
+            <img src="${userImage}" alt="">
+            <h1>${username}</h1>
+        </div>`
+      users.innerHTML += messageTemplate
+    }
+
+  </script>
+</body>
+
+</html>

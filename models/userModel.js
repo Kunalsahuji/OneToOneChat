@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
 const userSchema = new mongoose.Schema({
-    profilePic: {
+    profileImage: {
         type: String,
-        default: "default.png"
+        default: "/images/default.png"
     },
     name: {
         type: String,
@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Email address is required'],
     },
     password: String,
+    socketId: String,
 
 }, { timestamps: true })
 
