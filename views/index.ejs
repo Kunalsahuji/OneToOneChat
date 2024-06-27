@@ -1,6 +1,3 @@
-<!-- <%- include('partials/header') %>
-  <h1>This is Home Page</h1>
-  <%- include('partials/footer') %> -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,15 +44,7 @@
       </div>
       <div class="conversation">
         <div class="messages">
-          <!-- <div class="message">
-            <img
-              src="https://images.unsplash.com/photo-1622396636133-ba43f812bc35?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D"
-              alt="">
-            <p>Some message</p>
-          </div>
-          <div class="message">
-            <p>Some message</p>
-          </div> -->
+          
         </div>
 
         <div class="inputs">
@@ -74,6 +63,8 @@
     var socket = io();
     var user = "<%= user.username %>"
     let receiver = null
+    let receiverImage = null
+
     socket.emit('join', user)
 
     // getOnlineUser axios
@@ -85,20 +76,25 @@
       console.log(err)
     });
 
-    // outGoingMessages
-    const button = document.querySelector('.inputs button')
-    const input = document.querySelector('.inputs input')
-    const messages = document.querySelector('.messages')
-
-    button.addEventListener('click', () => {
-      const message = input.value
+    // appendOutGoingMessages
+    function appendOutGoingMessage(message) {
       const messageTemplate = `
       <div class="message">
             <p>${message}</p>
-          </div>
-      `
+          </div> `
+      const messages = document.querySelector('.messages')
+      const input = document.querySelector('.inputs input')
       messages.innerHTML += messageTemplate
       input.value = ""
+    }
+
+    // outGoingMessages
+    const button = document.querySelector('.inputs button')
+    button.addEventListener('click', () => {
+      const input = document.querySelector('.inputs input')
+      const messages = document.querySelector('.messages')
+      const message = input.value
+      appendOutGoingMessage(message)
 
       socket.emit("sony", {
         sender: user,
@@ -107,11 +103,14 @@
       })
     })
 
+    //  max
     socket.on("max", (messagePacket) => {
-      appendIncomingMessage(messagePacket.sender.profileImage , messagePacket.text)
+      console.log(messagePacket)
+      if (messagePacket.sender.username == receiver)
+        appendIncomingMessage(messagePacket.sender.profileImage, messagePacket.text)
     })
 
-    // incomingMessages
+    // appendIncomingMessages
     function appendIncomingMessage(userImage, message) {
       const messages = document.querySelector('.messages')
       const messageTemplate = `
@@ -136,6 +135,7 @@
     // openChat 
     function openChat(userImage, username) {
       receiver = username
+      receiverImage = userImage
       const right = document.querySelector(".right")
       const topUserImage = document.querySelector(".topUser .user img")
       const topUserText = document.querySelector(".topUser .user .text")
@@ -143,9 +143,21 @@
       right.style.display = "flex"
       topUserImage.src = userImage
       topUserText.textContent = username
+      axios.get(`/getMessage?receiver=${receiver}`).then((response) => {
+        console.log(response)
+        response.data.message.forEach((message) => {
+          if (message.sender == user) {
+            appendOutGoingMessage(message.text)
+          }
+          else {
+            appendIncomingMessage(receiverImage, message.text)
+          }
+        })
+      })
     }
 
   </script>
 </body>
 
 </html>
+
