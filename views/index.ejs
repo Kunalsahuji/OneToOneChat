@@ -144,8 +144,8 @@
       topUserImage.src = userImage
       topUserText.textContent = username
       axios.get(`/getMessage?receiver=${receiver}`).then((response) => {
-        console.log(response)
-        response.data.message.forEach((message) => {
+        document.querySelector('.messages').innerHTML = ""
+        response.data.messages.forEach((message) => {
           if (message.sender == user) {
             appendOutGoingMessage(message.text)
           }
