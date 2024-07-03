@@ -33,10 +33,9 @@ router.post('/register-user', async function (req, res, next) {
   try {
     const { name, username, email, password } = req.body;
     const { profileImage } = req.body.profileImage
-    const registeredUSer = User.register(
+    User.register(
       { profileImage, name, username, email }, password
     )
-    registeredUSer.save()
     res.redirect('/login',);
   } catch (error) {
     console.log(error)
