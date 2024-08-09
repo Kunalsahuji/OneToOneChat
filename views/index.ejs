@@ -3,58 +3,97 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WhatsappChat</title>
   <link href='https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css' rel='stylesheet' />
-  <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
 
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
-<body>
-  <main>
-
-    <div class="left">
-      <div class="top">
-        <div class="user">
-          <img src="<%= user.profileImage %>" alt="">
-          <h1>
+<body class="bg-gray-100">
+  <main class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-full md:w-1/3 lg:w-1/4 bg-gray-200 flex flex-col">
+      <!-- Top Section -->
+      <div class="flex items-center justify-between p-4 bg-gray-300">
+        <div class="flex items-center space-x-3">
+          <img src="<%= user.profileImage %>" alt="User Image" class="w-10 h-10 rounded-full object-cover">
+          <h1 class="text-gray-800 font-semibold">
             <%= user.username %>
           </h1>
         </div>
+        <button class="text-gray-600 hover:text-gray-800">
+          <i class="ri-more-2-line text-xl"></i>
+        </button>
       </div>
-
-      <div class="bottom">
-        <div class="users">
-
+      <!-- Search Bar -->
+      <div class="p-4">
+        <input type="text" placeholder="Search contacts"
+          class="w-full px-4 py-2 rounded-full bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <!-- Contacts List -->
+      <div class="flex-1 overflow-y-auto">
+        <div class="users space-y-2 px-2">
+          <!-- Contacts will be appended here -->
         </div>
       </div>
     </div>
-    <div class="right">
-      <div class="topUser">
-        <div class="user">
-          <img
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D"
-            alt="">
-          <div class="text">
-            <h1>Username</h1>
-            <small>Active now</small>
+
+    <!-- Chat Section -->
+    <div class="flex-1 bg-white flex flex-col">
+      <!-- Default State -->
+      <div class="flex-1 flex items-center justify-center" id="defaultState">
+        <h2 class="text-gray-400">Select a chat to start messaging</h2>
+      </div>
+      <!-- Chat Content -->
+      <div class="hidden flex-1 flex flex-col" id="chatContent">
+        <!-- Chat Header -->
+        <div class="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
+          <div class="flex items-center space-x-3">
+            <img src="" alt="Receiver Image" class="w-10 h-10 rounded-full object-cover" id="receiverImage">
+            <div>
+              <h1 class="text-gray-800 font-semibold" id="receiverName">Username</h1>
+              <small class="text-green-500">Active now</small>
+            </div>
+          </div>
+          <button class="text-gray-600 hover:text-gray-800">
+            <i class="ri-more-2-line text-xl"></i>
+          </button>
+        </div>
+        <!-- Messages -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" id="messagesContainer">
+          <!-- Messages will be appended here -->
+        </div>
+        <!-- Message Input -->
+        <div class="p-4 bg-gray-100">
+          <div class="flex items-center space-x-2 fixed bottom-0 w-[70vw]">
+            <input type="text" placeholder="Write your message"
+              class="flex-1 px-4 py-2 rounded-full bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="messageInput">
+            <button class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600 focus:outline-none"
+              id="sendButton">
+              <i class="ri-send-plane-2-fill text-xl"></i>
+            </button>
           </div>
         </div>
       </div>
-      <div class="conversation">
-        <div class="messages">
-          
-        </div>
-
-        <div class="inputs">
-          <input type="text" placeholder="Write your message">
-          <button><i class="ri-send-plane-line"></i></button>
-        </div>
-      </div>
     </div>
-
   </main>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"
     integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -67,7 +106,7 @@
 
     socket.emit('join', user)
 
-    // getOnlineUser axios
+    // Get Online Users
     axios.get('/getOnlineUser').then((response) => {
       response.data.onlineUsers.forEach((onlineUser) => {
         appendNewChat(onlineUser.profileImage, onlineUser.username)
@@ -76,24 +115,43 @@
       console.log(err)
     });
 
-    // appendOutGoingMessages
+    // Append Outgoing Message
     function appendOutGoingMessage(message) {
       const messageTemplate = `
-      <div class="message">
+        <div class="flex justify-end">
+          <div class="bg-green-500 text-white px-4 py-2 rounded-lg max-w-xs">
             <p>${message}</p>
-          </div> `
-      const messages = document.querySelector('.messages')
-      const input = document.querySelector('.inputs input')
+          </div>
+        </div>
+      `
+      const messages = document.getElementById('messagesContainer')
+      const input = document.getElementById('messageInput')
       messages.innerHTML += messageTemplate
       input.value = ""
+      messages.scrollTop = messages.scrollHeight
     }
 
-    // outGoingMessages
-    const button = document.querySelector('.inputs button')
-    button.addEventListener('click', () => {
-      const input = document.querySelector('.inputs input')
-      const messages = document.querySelector('.messages')
-      const message = input.value
+    // Append Incoming Message
+    function appendIncomingMessage(userImage, message) {
+      const messageTemplate = `
+        <div class="flex justify-start items-end space-x-2">
+          <img src="${userImage}" alt="User Image" class="w-8 h-8 rounded-full object-cover">
+          <div class="bg-white text-gray-800 px-4 py-2 rounded-lg max-w-xs shadow">
+            <p>${message}</p>
+          </div>
+        </div>
+      `
+      const messages = document.getElementById('messagesContainer')
+      messages.innerHTML += messageTemplate
+      messages.scrollTop = messages.scrollHeight
+    }
+
+    // Send Message
+    const sendButton = document.getElementById('sendButton')
+    sendButton.addEventListener('click', () => {
+      const input = document.getElementById('messageInput')
+      const message = input.value.trim()
+      if (message === "") return
       appendOutGoingMessage(message)
 
       socket.emit("sony", {
@@ -103,48 +161,41 @@
       })
     })
 
-    //  max
+    // Listen for Incoming Messages
     socket.on("max", (messagePacket) => {
-      console.log(messagePacket)
       if (messagePacket.sender.username == receiver)
         appendIncomingMessage(messagePacket.sender.profileImage, messagePacket.text)
     })
 
-    // appendIncomingMessages
-    function appendIncomingMessage(userImage, message) {
-      const messages = document.querySelector('.messages')
-      const messageTemplate = `
-      <div class="message">
-            <img src="${userImage}" alt="">
-            <p>${message}</p>
-      </div>`
-      messages.innerHTML += messageTemplate
-    }
-
-    // newChat 
+    // Append New Chat
     function appendNewChat(userImage, username) {
-      const users = document.querySelector('.left .users')
+      const users = document.querySelector('.users')
       const userTemplate = `
-       <div onClick="openChat('${userImage}', '${username}')" class="user">
-            <img src="${userImage}" alt="">
-            <h1>${username}</h1>
-        </div>`
+        <div onClick="openChat('${userImage}', '${username}')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-300 cursor-pointer">
+          <img src="${userImage}" alt="User Image" class="w-10 h-10 rounded-full object-cover">
+          <h1 class="text-gray-800 font-medium">${username}</h1>
+        </div>
+      `
       users.innerHTML += userTemplate
     }
 
-    // openChat 
+    // Open Chat
     function openChat(userImage, username) {
       receiver = username
       receiverImage = userImage
-      const right = document.querySelector(".right")
-      const topUserImage = document.querySelector(".topUser .user img")
-      const topUserText = document.querySelector(".topUser .user .text")
 
-      right.style.display = "flex"
-      topUserImage.src = userImage
-      topUserText.textContent = username
+      // Update Header
+      document.getElementById('receiverImage').src = userImage
+      document.getElementById('receiverName').textContent = username
+
+      // Show Chat Content
+      document.getElementById('defaultState').classList.add('hidden')
+      document.getElementById('chatContent').classList.remove('hidden')
+
+      // Fetch Messages
       axios.get(`/getMessage?receiver=${receiver}`).then((response) => {
-        document.querySelector('.messages').innerHTML = ""
+        const messagesContainer = document.getElementById('messagesContainer')
+        messagesContainer.innerHTML = ""
         response.data.messages.forEach((message) => {
           if (message.sender == user) {
             appendOutGoingMessage(message.text)
@@ -156,8 +207,14 @@
       })
     }
 
+    // Send Message on Enter Key
+    const messageInput = document.getElementById('messageInput')
+    messageInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        sendButton.click()
+      }
+    })
   </script>
 </body>
 
 </html>
-

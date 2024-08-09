@@ -7,21 +7,35 @@
     <title>SocketIO</title>
     <link rel="icon"
         href="https://imgs.search.brave.com/sUj8tUrxSXybBcFaVx113NlJBE7iYWkrEG1xMYAuVR0/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9wbHVz/LnVuc3BsYXNoLmNv/bS9wcmVtaXVtX3Bo/b3RvLTE2ODM1ODQ0/MDU3NzItYWU1ODcx/MmI0MTcyP3E9ODAm/dz0xMDAwJmF1dG89/Zm9ybWF0JmZpdD1j/cm9wJml4bGliPXJi/LTQuMC4zJml4aWQ9/TTN3eE1qQTNmREI4/TUh4elpXRnlZMmg4/T1h4OGQyaGhkSE5o/Y0hBbE1qQnBZMjl1/ZkdWdWZEQjhmREI4/Zkh3dw.jpeg">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-
 </head>
 
-<body>
-    <nav class=" flex gap-x-10 font-semibold justify-center text-center text-xl">
-        <% if(user) { %>
-            <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/">Homepage</a>
-            <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3"
-                href="/logout-user/<%=user._id%>">Logout</a>
-            <% } else{ %>
-                <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/">Homepage</a>
-                <a class="hover:bg-gray-600 hover:text-purple-400 block rounded-xl p-3" href="/login">Login</a>
-                <% } %>
-
+<body class="bg-gray-300 text-gray-800 p-1">
+    <nav class="flex justify-center py-3 shadow-lg rounded-b-xl border border-gray-900">
+        <ul class="flex gap-8 font-semibold text-lg">
+            <% if(user) { %>
+                <li>
+                    <a class="transition ease-in-out duration-300 hover:bg-white/40 hover:text-green-500 px-5 py-2 rounded-lg transform hover:scale-105"
+                        href="/">Homepage</a>
+                </li>
+                <li>
+                    <a class="transition ease-in-out duration-300 hover:bg-white/40 hover:text-green-500 px-5 py-2 rounded-lg transform hover:scale-105"
+                        href="/logout-user/<%=user._id%>">Logout</a>
+                </li>
+                <% } else { %>
+                    <li>
+                        <a class="transition ease-in-out duration-300 hover:bg-white/40 hover:text-green-500 px-5 py-2 rounded-lg transform hover:scale-105"
+                            href="/">Homepage</a>
+                    </li>
+                    <li>
+                        <a class="transition ease-in-out duration-300 hover:bg-white/40 hover:text-green-500 px-5 py-2 rounded-lg transform hover:scale-105"
+                            href="/login">Login</a>
+                    </li>
+                    <% } %>
+        </ul>
     </nav>
+</body>
+
+</html>

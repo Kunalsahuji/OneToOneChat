@@ -1,31 +1,46 @@
 <%- include('partials/header') %>
-    <div class="rounded-3xl pt-[2%] w-[55%] m-auto bg-purple-900">
-        <div class="">
-            <h1 class="bg-gray-200 w-[50%] p-5 m-auto rounded-xl text-center text-5xl font-extrabold text-purple-400">
-                Register User</h1>
-        </div>
 
-        <form class="mt-[3%] text-center" action="/register-user" method="post"> <br>
-            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl bg-gray-200 text-gray-400"
-                type="file" name="profileImage" placeholder="profileImage"> <br>
-            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl text-gray-700" type="text"
-                name="name" placeholder="full name"> <br>
-            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl text-gray-700" type="username"
-                name="username" placeholder="username"> <br>
-            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl text-gray-700" type="email"
-                name="email" placeholder="email"> <br>
-            <input class="w-[30%] mb-5  border border-zinc-500 p-3 rounded-md text-xl text-gray-700" type="password"
-                name="password" placeholder="password"> <br>
+    <div class="w-full h-[90vh] flex justify-center items-center px-4">
+        <div class="bg-white/40 backdrop-blur-sm rounded-xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 p-6">
+            <div class="text-center mb-6">
+                <h1 class="text-4xl font-extrabold text-gray-800">Register User</h1>
+            </div>
 
-            <button
-                class="mt-3 rounded-xl text-center block w-[30%] m-auto hover:bg-[purple-600 text-white py-3 px-5 bg-purple-400">Register-user</button>
+            <form class="text-center" action="/register-user" method="post" enctype="multipart/form-data">
+                <input
+                    class="w-full sm:w-3/4 mb-6 p-3 rounded-xl text-xl text-gray-900 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-100"
+                    type="file" name="profileImage" placeholder="Profile Image">
 
+                <input
+                    class="w-full sm:w-3/4 mb-6 p-3 rounded-xl text-xl text-gray-900 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-150"
+                    type="text" name="name" placeholder="Full Name">
 
-        </form>
-        <div class="py-2">
-            <p class="mt-3 w-[40%] text-center m-auto">Already have an account?
-                <a class="text-purple-400 hover:text-purple-600" href="/login">Login</a>
-            </p>
+                <input
+                    class="w-full sm:w-3/4 mb-6 p-3 rounded-xl text-xl text-gray-900 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-150"
+                    type="text" name="username" placeholder="Username">
+
+                <input
+                    class="w-full sm:w-3/4 mb-6 p-3 rounded-xl text-xl text-gray-900 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-150"
+                    type="email" name="email" placeholder="Email">
+
+                <input
+                    class="w-full sm:w-3/4 mb-6 p-3 rounded-xl text-xl text-gray-900 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-150"
+                    type="password" name="password" placeholder="Password">
+
+                <button
+                    class="w-full sm:w-3/4 py-3 px-5 bg-green-500 text-gray-900 rounded-xl hover:bg-green-600 transition-colors duration-200">
+                    Register
+                </button>
+            </form>
+
+            <div class="text-center mt-6">
+                <p class="text-gray-900">
+                    Already have an account? <a
+                        class="text-green-400 hover:text-green-500 transition-colors duration-200"
+                        href="/login">Login</a>
+                </p>
+            </div>
         </div>
     </div>
+
     <%- include('partials/footer') %>
