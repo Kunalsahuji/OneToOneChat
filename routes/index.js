@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../utils/multer')
 
 const authController = require('../controllers/authController')
 const chatController = require('../controllers/chatController')
@@ -19,10 +20,10 @@ router.post('/login-user',
 );
 
 // Register page route
-router.get('/register', userController.getRegisterUser);
+router.get('/register', upload.single("profileImage"), userController.getRegisterUser);
 
 // Register user route
-router.post('/register-user', userController.PostRegisterUser);
+router.post('/register-user', upload.single("profileImage"), userController.PostRegisterUser);
 
 // Logout user route
 router.get('/logout-user/:id', authController.isLoggedIn, userController.logoutUser);
@@ -32,6 +33,8 @@ router.get('/getOnlineUser', authController.isLoggedIn, userController.getOnline
 
 // Get messages route
 router.get('/getMessage', authController.isLoggedIn, chatController.getMessages);
+
+
 
 module.exports = router;
 

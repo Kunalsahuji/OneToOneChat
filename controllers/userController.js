@@ -1,5 +1,8 @@
 const User = require('../models/userModel');
 const passport = require('passport')
+const multer = require('multer');
+const upload = require('../utils/multer')
+
 
 //Initialize passport local strategy
 const LocalStrategy = require('passport-local');
@@ -26,15 +29,32 @@ exports.getRegisterUser = (req, res) => {
 
 exports.PostRegisterUser = async (req, res) => {
     try {
-        const { name, username, email, password } = req.body
-        const { profileImage } = req.body.profileImage
-        await User.register({ profileImage, name, username, email }, password)
-        res.redirect('/login')
+        const { name, username, email, password } = req.body;
+
+        const profileImage = req.file ? `/images/${req.file.filename}` : "/images/default.png";
+
+        const newUser = new User({
+            name,
+            username,
+            email,
+            profileImage  
+        });
+
+        User.register(newUser, password, (err, user) => {
+            if (err) {
+                console.error("Error registering user:", err);
+                return res.status(500).send(err.message);
+            }
+
+            // If successful, redirect to login page
+            res.redirect('/login');
+        });
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).send(error.message);
     }
-}
+};
+
 
 exports.getOnlineUsers = async (req, res) => {
     try {
@@ -49,3 +69,4 @@ exports.getOnlineUsers = async (req, res) => {
         res.status(500).send(error.message);
     }
 }
+

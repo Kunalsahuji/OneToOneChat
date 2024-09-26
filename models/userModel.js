@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
+
 const userSchema = new mongoose.Schema({
     profileImage: {
         type: String,
