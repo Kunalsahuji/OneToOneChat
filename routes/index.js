@@ -28,6 +28,15 @@ router.post('/register-user', upload.single("profileImage"), userController.Post
 // Logout user route
 router.get('/logout-user/:id', authController.isLoggedIn, userController.logoutUser);
 
+// Forgot password route page
+router.get('/forgot-password', authController.isLoggedIn, userController.getForgotPassword);
+// Forgot password route
+router.post('/forgot-password', authController.isLoggedIn, userController.PostForgotPassword);
+
+// Reset password route page
+router.get('/reset-password/:token', authController.isLoggedIn, userController.GetResetPassword);
+// Reset password route
+router.post('/reset-password/:token', authController.isLoggedIn, userController.PostResetPassword);
 // Get online users route
 router.get('/getOnlineUser', authController.isLoggedIn, userController.getOnlineUsers);
 
