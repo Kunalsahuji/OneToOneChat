@@ -36,9 +36,18 @@
             <%= user.username %>
           </h1>
         </div>
-        <button class="text-gray-600 hover:text-gray-800">
-          <i class="ri-more-2-line text-xl"></i>
-        </button>
+
+<div class="relative">
+  <button id="menuButton" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+    <i class="ri-more-2-line text-xl" alt="Menu"></i>
+  </button>
+  <div id="dropdownMenu"
+    class="hidden absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10 py-2 border border-gray-200">
+    <a href="/logout-user/<%= user._id %>"
+      class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-150">Logout</a>
+  </div>
+</div>
+
       </div>
   
       <!-- Search Bar (Fixed) -->
@@ -115,6 +124,19 @@
     let receiverImage = null
 
     socket.emit('join', user)
+    // Toggle dropdown menu on click
+document.getElementById("menuButton").addEventListener("click", function (e) {
+  e.stopPropagation()
+  const menu = document.getElementById("dropdownMenu")
+  menu.classList.toggle("hidden")
+})
+
+// Hide menu if clicked outside
+document.addEventListener("click", function () {
+  const menu = document.getElementById("dropdownMenu")
+  menu.classList.add("hidden")
+})
+
 
     // Get Online Users
     axios.get('/getOnlineUser').then((response) => {

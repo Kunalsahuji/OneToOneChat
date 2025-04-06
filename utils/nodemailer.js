@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer");
-const crypto = require("crypto");
-const User = require("../models/userModel");
 const { EMAIL_ID, PASS, ADDRESS } = process.env
+console.log(EMAIL_ID, PASS, ADDRESS)
 
-const sendmail = async (email, resetUrl) => {
+
+const sendmail = async (user, resetUrl) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -16,25 +16,25 @@ const sendmail = async (email, resetUrl) => {
     });
 
     const mailOptions = {
-      to: email,
+      to: user.email,
       from: ADDRESS,
       subject: "Password Reset Request",
       text: "Do not share this link to anyone",
       html: `<p>You requested a password reset. Click <a href='${resetUrl}'>here</a> to reset your password.</p>`
     };
 
-    const user = await User.findOne({ email });
-    if (!user) throw new Error("User not found");
     transporter.sendMail(mailOptions, async (error, info) => {
-      if (error) res.send(error);
-      else console.log("Email sent:", info.response);
-      // user.resetPasswordToken = 1
-      // await user.save();
-      // res.send(`<h1 style="text-align:center; margin-top: 20px; color: tomato;">Check Inbox/Spam</h1>`)
+      if (error) console.log(error);
+
+      user.resetPasswordToken = 1
+      console.log("Email sent:", info);
+      await user.save();
+      // res.send(`<h1 style="text-align:center; margin-top: 20px; color: tomato;">Check Inbox/Spam Reset password link has been sent to your email.</h1>`)
+
     })
+
   } catch (error) {
     console.log(error)
-    res.send(error);
   }
 }
 

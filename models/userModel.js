@@ -46,12 +46,10 @@ const userSchema = new mongoose.Schema({
     //   }
     // },
     socketId: String,
-    resetPasswordToken: String,
-    resetPasswordExpires: Date,
-    // resetPasswordToken: {
-    //     type: Number,
-    //     default: 0,
-    // },
+resetPasswordToken: {
+        type: Number,
+        default: 0,
+    },
 }, { timestamps: true })
 
 

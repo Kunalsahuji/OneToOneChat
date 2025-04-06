@@ -47,8 +47,6 @@ exports.PostRegisterUser = async (req, res) => {
                 console.error("Error registering user:", err);
                 return res.status(500).send(err.message);
             }
-
-            // If successful, redirect to login page
             res.redirect('/login');
         });
     } catch (error) {
@@ -56,67 +54,44 @@ exports.PostRegisterUser = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
-exports.getForgotPassword = (req, res) => {
-    res.render('forgot-password', { user: req.user })
+exports.getForgotEmail = (req, res) => {
+    res.render('forgot-email', { user: req.user })
 }
-exports.PostForgotPassword = async (req, res) => {
+exports.PostForgotEmail = async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            return res.status(400).send("User not found");
+        const user = await User.findOne({ email: req.body.forgotEmail });
+        if (user) {
+            const resetUrl = `${req.protocol}://${req.get("host")}/forgot-password/${user._id}`
+            console.log("reset url : ", resetUrl)
+            sendmail(user, resetUrl)
+            res.send("Reset password link has been sent to your email.");
         }
-        const token = crypto.randomBytes(20).toString("hex");
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-        await user.save();
-        const resetUrl = `${req.protocol}://${req.get("host")}/forget-password/${user._id}`
-
-        sendResetEmail(user, resetUrl)
-        res.send("Reset password link has been sent to your email.");
+        else {
+            res.redirect("/forgot-email")
+        }
     } catch (error) {
         console.error("Error in forgot password:", error);
         res.status(500).send(error.message);
     }
 }
-exports.GetResetPassword = async (req, res) => {
-    try {
-        const user = await User.findOne({
-            resetPasswordToken: req.params.token,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
-        if (!user) {
-            return res.status(400).send("Token expired or invalid");
-        }
-        res.render("reset-password", { token: req.params.token });
-    } catch (error) {
-        console.error("Error in reset password:", error);
-        res.status(500).send(error.message);
-    }
+
+exports.getForgotPassword = (req, res) => {
+    res.render('forgot-password', { user: req.user, id: req.params.id })
 }
-exports.PostResetPassword = async (req, res) => {
+exports.PostForgotPassword = async (req, res) => {
     try {
-        const user = await User.findOne({
-            resetPasswordToken: req.params.token,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
-        if (!user) {
-            return res.status(400).send("Token expired or invalid");
-        }
-        // user.password = req.body.password;
-        // user.resetPasswordToken = undefined;
-        // user.resetPasswordExpires = undefined;
-        user.setPassword(req.body.password, async (err) => {
-            if (err) {
-                return res.status(500).send("Error resetting password.");
-            }
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
+        const user = await User.findById(req.params.id);
+        if (user.resetPasswordToken === 1) {
+            await user.setPassword(req.body.newPassword);
+            user.resetPasswordToken = 0;
             await user.save();
-            res.redirect("/login");
-        })
+            res.redirect('/login')
+        } else {
+            res.send("Link Expired. Try Again!");
+        }
     } catch (error) {
-        console.error("Error in reset password:", error);
-        res.status(500).send(error.message);
+        console.log(error.message)
+        res.send(error)
     }
 }
 

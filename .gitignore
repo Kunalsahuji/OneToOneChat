@@ -2,3 +2,4 @@ node_modules
 package-lock.json
 style.css.map
 style.scss
+.env
